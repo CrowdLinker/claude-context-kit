@@ -1,0 +1,8 @@
+# Working folders linked to a project. install.sh (via scripts/link-repos.sh) reads this.
+# <folder>                          <project slug>   <mode>
+#   folder: relative to the folder that holds this repo (e.g. ~/Code), or ~/... or an absolute path
+#   mode:   local  (default) nothing is committed to that repo: use for team and client repos
+#           commit           the link and docs/STATE.md are committed: use for repos that are yours alone
+#
+# my-app                            example          commit
+# client-portal                     example          local

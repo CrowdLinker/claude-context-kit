@@ -1,0 +1,2 @@
+# Non-code working folders that sync.sh also commits and pushes, each to its own private repo.
+# Add one with: scripts/backup-folder.sh <folder> <owner>/<repo>
