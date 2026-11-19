@@ -38,6 +38,7 @@ pushes them.
 | `scripts/backup-folder.sh` | Puts a non-code folder (sales, content, docs) in its own private repo and keeps it pushed |
 | `scripts/move-sessions.sh` | After you move a folder, copies its session history to where Claude Code now looks |
 | `scripts/check-hooks.py` | Runs every SessionStart hook and names the one that prints broken JSON |
+| `scripts/cloud-setup.sh` | Setup-script block that points Claude Code cloud sessions at the context repo |
 
 ## Quick start
 
@@ -54,6 +55,36 @@ cd context && ./install.sh --dry-run && ./install.sh
 
 Then start a new session and ask "Which folder is your memory in?". It should name the `memory`
 folder inside your repo.
+
+## Cloud sessions
+
+Claude Code cloud sessions (claude.ai/code) run on a fresh machine. They don't get your
+`~/.claude/CLAUDE.md`, the hooks or your local skills
+([docs](https://code.claude.com/docs/en/cloud-environments#what-carries-over-from-your-setup)),
+and a session with more than one repository doesn't run the repos' hooks
+([docs](https://code.claude.com/docs/en/settings#settings-in-cloud-sessions)). Skills you enable
+on claude.ai do load. To give cloud sessions the same context:
+
+1. Paste [`scripts/cloud-setup.sh`](scripts/cloud-setup.sh) into the environment's setup script
+   (replace `<owner>/<repo>` first). It appends a short section to the cloud machine's
+   `~/.claude/CLAUDE.md`: read STATE at the start; pull, update and push at the end. This is the
+   documented way to add personal instructions to a cloud session
+   ([docs](https://code.claude.com/docs/en/cloud-environments#add-personal-preferences-without-committing-to-the-repo)).
+   It needs no secrets. The docs suggest your own environment rather than a shared one; on a
+   shared one, Claude ignores the section unless the context repo is attached, but teammates can
+   see your repo's name.
+2. In each session, attach the context repo as a second repository next to the code repo. The
+   Claude GitHub app needs access to it, and `/wrap` pushes to its `main` branch, so branch
+   protection on that repo would block it.
+
+This part is newer than the rest of the kit and hasn't had as much use yet. In your first cloud
+session, run `/context` and check that `/root/.claude/CLAUDE.md` is listed under Memory files.
+
+## Desktop chats
+
+Paste [`chat/PROJECT_INSTRUCTIONS.md`](chat/PROJECT_INSTRUCTIONS.md) into each Claude desktop
+Project's instructions. For a Project shared with your team, use the "only me" version in the same
+file, so teammates' chats and scheduled tasks don't try to use your private repo.
 
 ## Safety
 
@@ -73,7 +104,9 @@ folder inside your repo.
 
 - It is not a backup of your machine. Transcripts, `~/.claude` and anything not committed still
   need Time Machine or a cloud backup.
-- It doesn't merge two people's notes. One writer per project at a time.
+- It doesn't merge two people's notes. Keep one writer per project at a time. `/wrap` pulls and
+  re-reads STATE before writing and changes only its own lines, so two of your own sessions don't
+  undo each other, but it is not a merge tool.
 - Notes can go stale like any document. The rules in `AGENTS.md` make sessions rewrite STATE
   rather than add to it, and trust the code over the notes when they disagree.
 

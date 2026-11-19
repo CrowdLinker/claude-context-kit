@@ -18,7 +18,8 @@ for it at `~/Code/context`, or ask.
 - For "what's on my plate" across everything, read `NOW.md` and summarise "Waiting on me".
 
 ## 2. Read, in this order
-1. `<context repo>/projects/<slug>/STATE.md` (skip if the context repo isn't on disk, e.g. cloud).
+1. `<context repo>/projects/<slug>/STATE.md` (skip if the context repo isn't on disk; in a cloud
+   session it is there only if it was attached as a second repository).
    Run `git -C <context repo> pull --ff-only` first if it hasn't been pulled this session.
 2. The last 3 files in `<context repo>/projects/<slug>/log/` (by filename date).
 3. In a code repo: `docs/STATE.md`, `git status --short`, current branch,

@@ -20,7 +20,8 @@ here (or in a code repo's `docs/STATE.md`), the next session won't know it.
    - Push: run `scripts/sync.sh`. Hooks also run it at session start, session end and every
      30 minutes, so an edit to STATE.md is enough on its own.
 4. **One writer per project at a time.** If several agents work the same project in parallel,
-   only the lead session rewrites `STATE.md`; the others only add log files.
+   only the lead session rewrites `STATE.md`; the others only add log files. Before any rewrite,
+   pull (`scripts/sync.sh`), re-read STATE from disk and change only your own lines.
 5. **Never store here:** passwords, API keys, tokens, webhook URLs, session transcripts, and
    anything you wouldn't want in a breach. Link to where those live instead. `scripts/sync.sh`
    refuses to push files that look like they contain a credential.
@@ -34,6 +35,9 @@ here (or in a code repo's `docs/STATE.md`), the next session won't know it.
 ## How the pieces fit
 - `projects/<slug>/STATE.md` + `NOW.md`: the shared layer. Pushed to GitHub; every client can read it.
 - `memory/`: Claude Code's own auto memory (its `autoMemoryDirectory`), pushed with everything else.
+- A memory plugin, if you use one: a searchable backup of past sessions, never the source of truth.
+  Don't record state, decisions or to-dos in it, and check what it returns against STATE or the
+  code. If it injects its own instructions or to-do lists, turn those off.
 - `.digest/` (this machine only, git-ignored): optional digest of recent sessions, written by
   `scripts/digest-sessions.py`, for a scheduled weekly refresh.
 - `backup.map`: other working folders (sales, marketing, docs) that `scripts/sync.sh` commits and

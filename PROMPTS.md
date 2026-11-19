@@ -110,4 +110,7 @@ Change nothing; just report.
 - Start work in a linked folder: the project's STATE loads on its own.
 - `/catchup` gives a short brief; `/wrap` saves where you stopped.
 - Start from your home folder to see everything waiting on you.
-- For Claude desktop Projects, paste `chat/PROJECT_INSTRUCTIONS.md` into each Project.
+- For Claude desktop Projects, paste `chat/PROJECT_INSTRUCTIONS.md` into each Project (it has an
+  "only me" version for Projects shared with your team).
+- For Claude Code cloud sessions, paste `scripts/cloud-setup.sh` into the environment's setup
+  script, and attach the context repo as a second repository in each session.
